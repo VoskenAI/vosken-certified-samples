@@ -1,0 +1,30 @@
+# Certified proof environment for vosken-certified-samples
+#
+# The verdicts in */VERDICT.txt were produced with exactly this toolchain,
+# inside the Docker image built from ./Dockerfile. reproduce.sh compares the
+# tools it finds against the version pins below: an exact match on all four
+# pins counts as a certified reproduction; anything else runs under an
+# "uncertified environment" banner.
+
+base-image: debian:bookworm-slim
+oss-cad-suite: 2026-06-25
+oss-cad-suite-source: https://github.com/YosysHQ/oss-cad-suite-build/releases/tag/2026-06-25
+
+# Version pins (as reported by each tool inside the image; reproduce.sh
+# parses these four lines).
+yosys: 0.66+154
+sby: 0.66-4-gd3e72d2
+z3: 4.15.5
+bitwuzla: 0.9.1
+
+# Full version strings for the record:
+#   yosys    : Yosys 0.66+154 (git sha1 23aadd92a)
+#   sby      : SBY v0.66-4-gd3e72d2
+#   z3       : Z3 version 4.15.5 - 64 bit
+#   bitwuzla : 0.9.1
+#
+# Frontend and engines the .sby files reference, all shipped in the suite:
+#   - yosys-slang plugin (read_slang), the only open-source SystemVerilog
+#     frontend that honours `bind`
+#   - smtbmc with z3 (wrr_arbiter prove/cover)
+#   - smtbmc with bitwuzla and abc pdr (ring_buffer prove/cover)
