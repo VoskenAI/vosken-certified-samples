@@ -21,4 +21,4 @@ clean:
 
 verdict:
 	@echo ""
-	@if [ -f VERDICT.txt ]; then echo "VERDICT:"; cat VERDICT.txt; else echo "No VERDICT.txt yet."; fi
+	@if [ -f ../VERDICT.txt ]; then echo "VERDICT:"; cat ../VERDICT.txt; else echo "No VERDICT.txt found."; fi
