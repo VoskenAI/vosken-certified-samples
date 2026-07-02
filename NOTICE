@@ -1,0 +1,11 @@
+vosken-certified-samples
+Copyright 2026 VoskenAI Ltd <info@vosken.ai>
+
+This product includes formally verified RTL primitives and their complete
+formal proof bundles, developed by VoskenAI Ltd and licensed under the
+Apache License, Version 2.0 (see LICENSE).
+
+The reproduction environment pins the YosysHQ oss-cad-suite (dated release
+recorded in ENVIRONMENT.txt), which is distributed by its authors under
+their own open-source licenses and is downloaded at Docker build time; it
+is not part of this work.
