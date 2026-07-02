@@ -93,8 +93,12 @@ answers it:
 ## What this is not
 
 These two primitives are free samples at the bottom rung of a trust ladder.
-The full pipeline, from plain-English specification to verified IP with the
-same reproducible evidence discipline, is showcased at
+Formal proof is one kind of evidence, strongest on control logic and bounded
+data structures like these; complex designs also need dynamic verification
+(UVM regression, coverage), and our full bundles carry both, each claim tied
+to the evidence that backs it. The full pipeline, from plain-English
+specification to RTL with formal and UVM evidence under the same reproducible
+discipline, is showcased at
 [github.com/VoskenAI/voskenai-vf2026](https://github.com/VoskenAI/voskenai-vf2026).
 
 ## License
