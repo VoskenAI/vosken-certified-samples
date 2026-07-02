@@ -1,0 +1,126 @@
+# VERDICT - wrr_arbiter (vosken-certified-samples)
+#
+# This certificate binds a formal verdict to exact RTL bits and an exact
+# toolchain. reproduce.sh re-runs the proofs and diffs every line below.
+# Certified environment: see ENVIRONMENT.txt (oss-cad-suite 2026-06-25).
+
+cell: wrr_arbiter (composes rr_arbiter_tree)
+verdict: PASS
+tier: A (internal sign-off ladder: unbounded proof, non-vacuous, mutation gate
+tier: 6/6 hand-injected single-fault RTL mutants killed, kill rate 1.0 at sign-off)
+unbounded: yes (mode prove, closed by k-induction at depth 12, not depth-bounded)
+vacuous: no (all 20 cover points reached across the swept configs under the same assumption set)
+config: 3-instance parameter sweep in one proof:
+config:   NUM_IN=2 WEIGHT_WIDTH=2 DATA_WIDTH=4 (u_n2)
+config:   NUM_IN=3 WEIGHT_WIDTH=1 DATA_WIDTH=2 (u_n3, non-power-of-two)
+config:   NUM_IN=4 WEIGHT_WIDTH=2 DATA_WIDTH=1 (u_n4)
+proof: sby -f formal/fv_wrr_arbiter.sby prove cover
+note: testbench assertions that re-state DUT definitions verbatim (most
+note: INV_ELIG_DEF instances) are constant-folded away by synthesis before
+note: the solver; the 76 checks below are the surviving proof obligations
+note: under the pinned toolchain.
+
+[dut_md5]
+43b5b2c044f3d828444f0931bea4ad80 rtl/wrr_arbiter.sv
+8f82dcd1209895803a7be4bbc1f829e2 rtl/rr_arbiter_tree.sv
+7b81420c51a84be76cbed0f615d430c8 rtl/vosken_assert.sv
+
+[prove]
+PASS ASSERT u_n2.a_gnt_implies_req_blk.a_gnt_implies_req
+PASS ASSERT u_n2.a_gnt_onehot0_blk.a_gnt_onehot0
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[0].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[0].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[0].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[0].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[1].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[1].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[1].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_quota_props[1].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_reset_quota[0].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.g_reset_quota[1].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.inv_qfidx_le.INV_QFIDX_LE_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.inv_reqelig_progress.INV_REQELIG_PROGRESS_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.inv_wait_qsum.INV_WAIT_QSUM_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.p_no_starve.P_NO_STARVE_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.p_reset_no_grant.P_RESET_NO_GRANT_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_RAWREQ_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_REQ_A
+PASS ASSERT u_n2.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_ONEHOT0_A
+PASS ASSERT u_n3.a_gnt_implies_req_blk.a_gnt_implies_req
+PASS ASSERT u_n3.a_gnt_onehot0_blk.a_gnt_onehot0
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[0].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[0].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[0].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[0].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[1].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[1].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[1].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[1].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[2].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[2].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[2].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_quota_props[2].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_reset_quota[0].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_reset_quota[1].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.g_reset_quota[2].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.inv_qfidx_le.INV_QFIDX_LE_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.inv_reqelig_progress.INV_REQELIG_PROGRESS_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.inv_wait_qsum.INV_WAIT_QSUM_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.p_no_starve.P_NO_STARVE_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.p_reset_no_grant.P_RESET_NO_GRANT_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_RAWREQ_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_REQ_A
+PASS ASSERT u_n3.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_ONEHOT0_A
+PASS ASSERT u_n4.a_gnt_implies_req_blk.a_gnt_implies_req
+PASS ASSERT u_n4.a_gnt_onehot0_blk.a_gnt_onehot0
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[0].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[0].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[0].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[0].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[1].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[1].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[1].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[1].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[2].inv_elig_def.INV_ELIG_DEF_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[2].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[2].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[2].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[2].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[3].inv_quota_range.INV_QUOTA_RANGE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[3].p_quota_no_underflow.P_QUOTA_NO_UNDERFLOW_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[3].p_reload_restores.P_RELOAD_RESTORES_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_quota_props[3].p_zero_weight_no_gnt.P_ZERO_WEIGHT_NO_GNT_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_reset_quota[0].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_reset_quota[1].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_reset_quota[2].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.g_reset_quota[3].p_reset_quota.P_RESET_QUOTA_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.inv_qfidx_le.INV_QFIDX_LE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.inv_reqelig_progress.INV_REQELIG_PROGRESS_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.inv_wait_qsum.INV_WAIT_QSUM_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.p_no_starve.P_NO_STARVE_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.p_reset_no_grant.P_RESET_NO_GRANT_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_RAWREQ_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_IMPLIES_REQ_A
+PASS ASSERT u_n4.u_fv_wrr_arbiter.sec_grant_shape.P_GNT_ONEHOT0_A
+
+[cover]
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_all_req.C_ALL_REQ_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_back_to_back.C_BACK_TO_BACK_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_grant_idx0.C_GRANT_IDX0_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_grant_idxmax.C_GRANT_IDXMAX_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_reload.C_RELOAD_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.c_starve_max.C_STARVE_MAX_P
+REACHED COVER u_n2.u_fv_wrr_arbiter.g_cover_drawdown.c_weight_drawdown.C_WEIGHT_DRAWDOWN_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_all_req.C_ALL_REQ_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_back_to_back.C_BACK_TO_BACK_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_grant_idx0.C_GRANT_IDX0_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_grant_idxmax.C_GRANT_IDXMAX_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_reload.C_RELOAD_P
+REACHED COVER u_n3.u_fv_wrr_arbiter.c_starve_max.C_STARVE_MAX_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_all_req.C_ALL_REQ_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_back_to_back.C_BACK_TO_BACK_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_grant_idx0.C_GRANT_IDX0_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_grant_idxmax.C_GRANT_IDXMAX_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_reload.C_RELOAD_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.c_starve_max.C_STARVE_MAX_P
+REACHED COVER u_n4.u_fv_wrr_arbiter.g_cover_drawdown.c_weight_drawdown.C_WEIGHT_DRAWDOWN_P

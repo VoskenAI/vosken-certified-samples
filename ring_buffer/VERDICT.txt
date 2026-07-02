@@ -1,0 +1,45 @@
+# VERDICT - ring_buffer (vosken-certified-samples)
+#
+# This certificate binds a formal verdict to exact RTL bits and an exact
+# toolchain. reproduce.sh re-runs the proofs and diffs every line below.
+# Certified environment: see ENVIRONMENT.txt (oss-cad-suite 2026-06-25).
+
+cell: ring_buffer
+verdict: PASS
+tier: A (internal sign-off ladder: unbounded proof, non-vacuous, zero deviations, zero remaining defects at sign-off)
+unbounded: yes (mode prove, closed by abc pdr / k-induction, not depth-bounded)
+vacuous: no (all 8 cover points reached under the same assumption set)
+config: DATA_WIDTH=32 DEPTH=32
+proof: sby -f formal/fv_ring_buffer.sby prove cover
+note: three testbench assertions (OccMatchesPtrDiff_A, RReadyImpliesWindow_A,
+note: WReadyIsNotFull_A) re-state DUT definitions verbatim and are constant-
+note: folded away by synthesis before the solver; the 12 checks below are the
+note: surviving proof obligations under the pinned toolchain.
+
+[dut_md5]
+2526cad957f711b58da60d95f6f33ef6 rtl/ring_buffer.sv
+7b81420c51a84be76cbed0f615d430c8 rtl/vosken_assert.sv
+
+[prove]
+PASS ASSERT a_occ_bound_blk.a_occ_bound
+PASS ASSERT fv_inst.DataIntegrity_A
+PASS ASSERT fv_inst.EmptyAfterReset_A
+PASS ASSERT fv_inst.EmptyIffOccZero_A
+PASS ASSERT fv_inst.FullIffOccDepth_A
+PASS ASSERT fv_inst.NotFullAndEmpty_A
+PASS ASSERT fv_inst.NoWriteWhenFull_A
+PASS ASSERT fv_inst.OccNoOverflow_A
+PASS ASSERT fv_inst.RPtrIsLowBits_A
+PASS ASSERT fv_inst.RReadyLowWhenEmpty_A
+PASS ASSERT fv_inst.RstPtrsZero_A
+PASS ASSERT fv_inst.WPtrIsLowBits_A
+
+[cover]
+REACHED COVER fv_cov_inst.CovBackToBackWrite_P
+REACHED COVER fv_cov_inst.CovEmpty_P
+REACHED COVER fv_cov_inst.CovFull_P
+REACHED COVER fv_cov_inst.CovHalfFull_P
+REACHED COVER fv_cov_inst.CovMultiStepAdvance_P
+REACHED COVER fv_cov_inst.CovReadAccepted_P
+REACHED COVER fv_cov_inst.CovWrapWrite_P
+REACHED COVER fv_cov_inst.CovWriteAccepted_P

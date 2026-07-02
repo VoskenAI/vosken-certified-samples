@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2026 VoskenAI Ltd <info@vosken.ai>
+# SPDX-License-Identifier: Apache-2.0
+#
+# SymbiYosys harness for wrr_arbiter.
+# Run from this directory:  sby -f fv_wrr_arbiter.sby
+# Frontend: yosys-slang (read_slang) — the only open-source frontend that
+# honours SystemVerilog bind. Native read_verilog silently drops bind.
+#
+# wrr_arbiter composes the shipped rr_arbiter_tree; both RTL files are read in
+# one read_slang invocation. -D FORMAL expands the DUT tier-1 macro contract
+# (a_weight_stable -> assume; the a_gnt_* tier-1 are asserts) — these are
+# immediate-assertion based (vosken_assert.sv), slang-safe, NOT concurrent SVA.
+# -D FORMAL activates the generated property module.
+#
+# prove closes by k-induction. The strengthening invariant set (INV_QUOTA_RANGE,
+# INV_WAIT_QSUM, INV_QFIDX_LE, INV_REQELIG_PROGRESS, INV_NEED_RELOAD_DEF,
+# INV_ELIG_DEF) bounds the per-round quota draw-down and the no-starvation wait
+# counter (f_wait + others-remaining-quota <= others-total-weight), making the
+# weighted-fairness and no-starvation proofs inductive. Cover depth lets a
+# tracked requester wait the full sum(weight)-1 grants then be granted.
+
+[tasks]
+prove
+cover
+
+[options]
+prove: mode prove
+cover: mode cover
+prove: depth 12
+cover: depth 28
+multiclock off
+
+[engines]
+smtbmc z3
+
+[script]
+plugin -i slang
+read_slang wrr_arbiter.sv rr_arbiter_tree.sv fv_wrr_arbiter.sv fv_wrr_arbiter_bind.sv fv_wrr_arbiter_assumes.sv --top fv_wrr_arbiter_top -D FORMAL -I .
+prep -top fv_wrr_arbiter_top
+
+[files]
+../rtl/wrr_arbiter.sv
+../rtl/rr_arbiter_tree.sv
+../rtl/vosken_assert.sv
+fv_wrr_arbiter.sv
+fv_wrr_arbiter_bind.sv
+fv_wrr_arbiter_assumes.sv
