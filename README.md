@@ -5,6 +5,11 @@ SPDX-License-Identifier: Apache-2.0
 
 # vosken-certified-samples
 
+**Watch the whole flow in 32 seconds** (reproduce, tamper, fail, restore):
+[YouTube](https://youtu.be/X3yoP0vUjpQ) ·
+[download](https://github.com/VoskenAI/vosken-certified-samples/releases/tag/v1.0.0)
+
+
 This repo contains two production RTL primitives, the complete formal proof
 bundle for each, and a certificate (`VERDICT.txt`) that pins every proof
 obligation, the exact RTL bits it was proven against, and the exact toolchain
