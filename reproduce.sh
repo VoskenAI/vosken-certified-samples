@@ -57,8 +57,24 @@ for arg in "$@"; do
     esac
 done
 
+docker_daemon_up() { docker info >/dev/null 2>&1; }
+
 if [ "$MODE" = "auto" ]; then
-    if command -v docker >/dev/null 2>&1; then MODE="docker"; else
+    if command -v docker >/dev/null 2>&1; then
+        if docker_daemon_up; then MODE="docker"; else
+            if command -v sby >/dev/null 2>&1 && command -v yosys >/dev/null 2>&1; then
+                echo "${YELLOW}Docker is installed but not running - using native sby/yosys from PATH.${NC}"
+                echo "${YELLOW}(For the pinned environment: start Docker Desktop and re-run.)${NC}"
+                MODE="native"
+            else
+                echo "${RED}Docker is installed but the Docker daemon is not running.${NC}" >&2
+                echo "Start Docker Desktop (macOS/Windows: open the Docker app; Linux:" >&2
+                echo "'sudo systemctl start docker'), then re-run ./reproduce.sh" >&2
+                echo "Or install native tools (see ENVIRONMENT.txt) and use --native." >&2
+                exit 2
+            fi
+        fi
+    else
         echo "${YELLOW}docker not found - falling back to native tools${NC}"
         MODE="native"
     fi
@@ -69,11 +85,17 @@ if [ "$MODE" = "docker" ]; then
         echo "${RED}--docker requested but docker is not installed${NC}" >&2
         exit 2
     fi
+    if ! docker_daemon_up; then
+        echo "${RED}--docker requested but the Docker daemon is not running.${NC}" >&2
+        echo "Start Docker Desktop (macOS/Windows: open the Docker app; Linux:" >&2
+        echo "'sudo systemctl start docker'), then re-run." >&2
+        exit 2
+    fi
     banner "Docker path: pinned environment (see ENVIRONMENT.txt)"
     if ! docker image inspect "$IMAGE_TAG" >/dev/null 2>&1; then
         echo "Image '$IMAGE_TAG' not found - building it (downloads the pinned"
         echo "oss-cad-suite release, several hundred MB, one time only)."
-        docker build -t "$IMAGE_TAG" "$REPO_ROOT" || exit 1
+        DOCKER_BUILDKIT=1 docker build -t "$IMAGE_TAG" "$REPO_ROOT" || exit 1
     fi
     exec docker run --rm \
         -v "$REPO_ROOT":/work -w /work -e HOME=/tmp \
